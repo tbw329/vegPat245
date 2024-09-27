@@ -4,15 +4,15 @@
 D = 1; %Seed dispersal rate 
 L = 4; %Evap Rate
 M = 1.8; %Mortality Rate
-J = 0.3; %Water Use Efficiency
+J = 0.003; %Water Use Efficiency
 V = 63; %Advection Rate
 R = 100; %Transpiration Rate
-P = 2.5; %Precip rate 
+P = 250; %Precip rate 
 
 %Finite difference parameters
 tmax = 10000; %number of timesteps to run
 xmax = 100; %number of gridpoints in space
-dt = 0.001; %Timestep size
+dt = 0.01; %Timestep size
 dx = 1; %Grid resolution
 xax = linspace(0,(xmax-1)*dx,xmax);
 
@@ -26,49 +26,65 @@ B=W;
 
 %IC  (The exact values of these are chosen from plot in Gandhi et al), B=W for ICs. 
 
-%     %Impulse ICs
+    %Impulse ICs
 %     W(1,1) = 2;
 %     B(1,1) = 2;
 
 for j = 1:xmax
 
-        %Uniform Noisy ICs
-        B(1,j) = 0.3 + (0.3*rand-0.15); % Initial vegetation density
-        W(1,j) = 0.3 + (0.3*rand-0.15); % Initial water concentration
+%         %Uniform Noisy ICs
+%         B(1,j) = 0.3 + (0.3*rand-0.15); % Initial vegetation density
+%         W(1,j) = 0.3 + (0.3*rand-0.15); % Initial water concentration
 
-%         %Periodic ICs
-%         B(1,j) = 0.3 + 0.15*(sin(2*pi*j/xmax)); % Initial vegetation density
-%         W(1,j) = 0.3 + 0.15*(sin(2*pi*j/xmax)); % Initial water concentration
+% %             Periodic ICs
+%             B(1,j) = 0.3 + 0.15*(sin(2*pi*j/xmax)); % Initial vegetation density
+%             W(1,j) = 0.3 + 0.15*(sin(2*pi*j/xmax)); % Initial water concentration
 
-%         %Step ICs
-%         if j<xmax/2
-%             B(1,j) = 0.3;
-%             W(1,j) = 0.3;
-%         else
-%             B(1,j) = 0.45;
-%             W(1,j) = 0.45;
-%         end
+        %Step ICs
+        if j<xmax/2
+            B(1,j) = 0.3;
+            W(1,j) = 0.3;
+        else
+            B(1,j) = 0.45;
+            W(1,j) = 0.45;
+        end
 
 end
-
-for i = 2:tmax
-    i
-     %Periodic BCs 
-     W(i,1) = W(i-1,1)+dt*((V/(2*dx))*(W(i-1,2)-W(i-1,xmax))-R*W(i-1,1)*B(i-1,1)^2+P - L*W(i-1,1));
-     B(i,1) = B(i-1,1)+dt*(D/(dx^2)*(B(i-1,2)-2*B(i-1,1)+B(i-1,xmax))-M*B(i-1,1)+J*R*W(i-1,1)*B(i-1,1)^2);
-     W(i,xmax) = W(i-1,xmax)+dt*((V/(2*dx))*(W(i-1,1)-W(i-1,xmax-1))-R*W(i-1,xmax)*B(i-1,xmax)^2+P - L*W(i-1,xmax));
-     B(i,xmax) = B(i-1,xmax)+dt*(D/(dx^2)*(B(i-1,1)-2*B(i-1,xmax)+B(i-1,xmax-1))-M*B(i-1,xmax)+J*R*W(i-1,xmax)*B(i-1,xmax)^2);
-    for j = 2:xmax-1
-        W(i,j) = W(i-1,j)+dt*((V/(2*dx))*(W(i-1,j+1)-W(i-1,j-1))-R*W(i-1,j)*B(i-1,j)^2+P - L*W(i-1,j));
-        B(i,j) = B(i-1,j)+dt*(D/(dx^2)*(B(i-1,j+1)-2*B(i-1,j)+B(i-1,j-1))-M*B(i-1,j)+J*R*W(i-1,j)*B(i-1,j)^2);
-    end
-%     W(i,1) = W(i,2);
-%     W(i,xmax) = W(i,xmax-1);
-%     B(i,1) = B(i,2);
-%     B(i,xmax) = B(i,xmax-1);
-    plot(xax,B(i,:))
+    
+    figure(1)
+    clf
+    fig1 = gca;
+    pl = plot(fig1,xax,B(1,:));
+    
     ylim([0 2])
     drawnow
+
+%Initialise the matrices
+
+lambda = dt*V/dx;
+mu = D*dt/(dx^2);
+
+lambdaMat = diag(repmat(1+lambda,xmax,1)) + diag(repmat(-lambda,xmax-1,1),1);
+lambdaMat(xmax,1) = -lambda;
+lambdaMatInv = lambdaMat^-1;
+
+muMat = diag(repmat(1+2*mu,xmax,1)) + diag(repmat(-mu,xmax-1,1),1) + diag(repmat(-mu,xmax-1,1),-1);
+muMat(xmax,1) = -mu;
+muMat(1,xmax) = -mu;
+muMatInv = muMat^-1;
+
+
+for i = 2:tmax
+    Wrow = W(i-1,:);
+    Brow = B(i-1,:);
+    W(i,:) = (lambdaMatInv*(Wrow + dt*(L*Wrow - R*Wrow.*Brow.^2 + P))')';
+    B(i,:) = (muMatInv*(Brow + dt*(J*R*Wrow.*Brow.^2 - M*Brow))')';
+
+if mod(i,10) == 0
+    pl.YData = B(i,:); 
+    drawnow
+    i
+end
 end
 
         
