@@ -10,11 +10,12 @@ R = 100; %Transpiration Rate
 P = 250; %Precip rate (in 240<P<272 range for pattern formation
 
 %Finite difference parameters
-tmax = 100000; %number of timesteps to run
-xmax = 100; %number of gridpoints in space
+tmax = 10000; %number of timesteps to run
+xmax = 1000; %number of gridpoints in space
 dt = 0.01; %Timestep size
 dx = 0.1; %Grid resolution
 xax = linspace(0,(xmax-1)*dx,xmax);
+domlength = dx*xmax;
 
 %Preallocating size of W,B
 W = zeros(tmax,xmax);
@@ -40,8 +41,8 @@ for j = 1:xmax
 
 %             Periodic ICs
             
-            B(1,j) = Beq + 0.1*(sin(2*pi*j/xmax)); % Initial vegetation density
-            W(1,j) = Weq + 0.1*(sin(2*pi*j/xmax)); % Initial water concentration
+            B(1,j) = Beq + 0.1*(sin(j*domlength/xmax)); % Initial vegetation density
+            W(1,j) = Weq + 0.1*(sin(j*domlength/xmax)); % Initial water concentration
             
 
 %         %Step ICs
@@ -84,7 +85,7 @@ muMatInv = muMat^-1;
 for i = 2:tmax
     Wrow = W(i-1,:);
     Brow = B(i-1,:);
-    W(i,:) = (lambdaMatInv*(Wrow + dt*(L*Wrow - R*Wrow.*Brow.^2 + P))')';
+    W(i,:) = (lambdaMatInv*(Wrow + dt*(-L*Wrow - R*Wrow.*Brow.^2 + P))')';
     B(i,:) = (muMatInv*(Brow + dt*(J*R*Wrow.*Brow.^2 - M*Brow))')';
 
 if mod(i,100) == 0
