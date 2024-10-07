@@ -30,9 +30,10 @@ end
 
 
 %Plot Precipiation against Biomass with stabilities
-hold off
-plot(stable(3,:),stable(2,:), '.g');
+figure(1)
+clf
 hold on
+plot(stable(3,:),stable(2,:), '.g');
 plot(unstable(3,:),unstable(2,:), '.r')
 xlim([200 320]);
 legend('stable','unstable',location = 'northwest')

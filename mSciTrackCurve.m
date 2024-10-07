@@ -15,7 +15,6 @@ ylist = zeros(ylength,nmax);
 
 fparamfix = @(x)f([x;y0(ylength)]);
 x = mSciSolve(fparamfix,y0(1:(ylength-1)),tol,maxit,jach); 
-disp('check')
 y = [x;y0(ylength)]; %Append parameter value to the found equilibrium
 ylist(:,1) = y;
 

@@ -1,16 +1,16 @@
 %Set up 
 
-%model (As in Gandhi et al (except P and D))
+%model (As in Gandhi et al)
 D = 10; %Seed dispersal rate - Something funky going on here
 L = 4; %Evap Rate
 M = 1.8; %Mortality Rate
 J = 0.003; %Water Use Efficiency
 V = 63; %Advection Rate
 R = 100; %Transpiration Rate
-P = 250; %Precip rate (in 240<P<272 range for pattern formation
+P = 272; %Precip rate (in 240<P<272 range for pattern formation
 
 %Finite difference parameters
-tmax = 10000; %number of timesteps to run
+tmax = 2000; %number of timesteps to run
 xmax = 1000; %number of gridpoints in space
 dt = 0.01; %Timestep size
 dx = 0.1; %Grid resolution
@@ -20,6 +20,7 @@ domlength = dx*xmax;
 %Preallocating size of W,B
 W = zeros(tmax,xmax);
 B=W;
+Bsum = B(:,1);
 
 % %DBCs
 % Wx0 = 0; 
@@ -41,8 +42,8 @@ for j = 1:xmax
 
 %             Periodic ICs
             
-            B(1,j) = Beq + 0.1*(sin(j*domlength/xmax)); % Initial vegetation density
-            W(1,j) = Weq + 0.1*(sin(j*domlength/xmax)); % Initial water concentration
+            B(1,j) = Beq + 0.1*(sin(0.25*j*domlength/xmax)); % Initial vegetation density
+            W(1,j) = Weq + 0.1*(sin(0.25*j*domlength/xmax)); % Initial water concentration
             
 
 %         %Step ICs
@@ -57,7 +58,7 @@ for j = 1:xmax
 end
 
 %Keeping note of total biomass
-Bsum(1) = sum(B(1,:));
+Bsum(1) = sum(B(1,:))/xmax;
 
     figure(1)
     clf
@@ -93,7 +94,7 @@ if mod(i,100) == 0
     drawnow
     i
 end
-Bsum(i) = sum(B(i,:));
+Bsum(i) = sum(B(i,:))/xmax;
 end
 
 %Total biomass over time plot, interesting
