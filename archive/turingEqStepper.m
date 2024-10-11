@@ -49,6 +49,7 @@ R = 100; %Transpiration Rate
 %Initial IC
 
 xmax = 1000;
+domlength = 100;
 
 Beq = 0.5*(P*J/M + sqrt((P*J/M)^2-4*L/R)); 
 Weq = M/(J*R*Beq);
@@ -62,12 +63,27 @@ for j = 1:xmax
 end
 
 Pindex = 0;
-Pax = 272:-10:100; 
+Pax = 272:-1:100; 
 Bavg = zeros(1,length(Pax));
+Bmax = Bavg;
+numPeaks = Bavg;
 for P = Pax
     Pindex = Pindex + 1;
-    [Bavg(Pindex),Btmax,Wtmax] = f_oneDPDE(P,Btmax,Wtmax);
     P
+    [Bavg(Pindex),Btmax,Wtmax,xax] = f_oneDPDE(P,Btmax,Wtmax);
+    Bmax(Pindex) = max(Btmax);
+    %This next part finds the number of peaks in Btmax.
+    %Finds difference between each point, finds where they change sign by
+    %multiplying adjacent differences.
+    diffs = zeros(xmax,1);
+    changes = diffs;
+    diffs(1) = Btmax(1) - Btmax(xmax);
+    for i = 2:xmax
+        diffs(i) = Btmax(i) - Btmax(i-1);
+        changes(i-1) = diffs(i)*diffs(i-1);
+    end
+    changes(xmax) = diffs(1)*diffs(xmax);
+    numPeaks(Pindex) = (sum(changes<0)/2); %Divide by two so we aren't countring troughs as well. 
 end
 
 %Plot uniform and Turing equilibira
@@ -76,8 +92,12 @@ clf
 hold on
 plot(stable(3,:),stable(2,:), '-k');
 plot(unstable(3,:),unstable(2,:), '--k')
-plot(Pax,Bavg,'-c')
-legend('Homogenous Stable','Homogenous Unstable','(Stable) Turing Equilibria',location = 'northwest')
+scatter(Pax,Bmax,[],numPeaks)
+scatter(Pax,Bavg,[],numPeaks,'filled')
+colormap(gca,'jet')
+c = colorbar;
+c.Label.String = 'Number of Wavelengths in Domain';
+legend('Homogenous Stable','Homogenous Unstable','Maximum Biomass in Patterns','Average Biomass in Patterns',location = 'northwest')
 title('Equilibria of the Klausemeier System')
 ylabel('Biomass Density kgm^{-2}')
 xlabel('Precipitation mmyr^{-1}')

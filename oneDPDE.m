@@ -7,10 +7,10 @@ M = 1.8; %Mortality Rate
 J = 0.003; %Water Use Efficiency
 V = 63; %Advection Rate
 R = 100; %Transpiration Rate
-P = 272; %Precip rate (in 240<P<272 range for pattern formation
+P = 250; %Precip rate (in 240<P<272 range for pattern formation
 
 %Finite difference parameters
-tmax = 2000; %number of timesteps to run
+tmax = 5000; %number of timesteps to run
 xmax = 1000; %number of gridpoints in space
 dt = 0.01; %Timestep size
 dx = 0.1; %Grid resolution
@@ -42,8 +42,11 @@ for j = 1:xmax
 
 %             Periodic ICs
             
-            B(1,j) = Beq + 0.1*(sin(0.25*j*domlength/xmax)); % Initial vegetation density
-            W(1,j) = Weq + 0.1*(sin(0.25*j*domlength/xmax)); % Initial water concentration
+%             B(1,j) = Beq + 0.01*(sin(0.25*j*domlength/xmax)); % Initial vegetation density
+%             W(1,j) = Weq + 0.01*(sin(0.25*j*domlength/xmax)); % Initial water concentration
+
+            B(1,j) = Beq + 0.01*(rand(1)-1/2); % Initial vegetation density
+            W(1,j) = Weq + 0.01*(rand(1)-1/2); % Initial water concentration
             
 
 %         %Step ICs

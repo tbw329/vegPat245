@@ -1,5 +1,5 @@
 %Set up 
-function [Bavg,Btmax,Wtmax] = f_oneDPDE(P,B0,W0)
+function [Bavg,Btmax,Wtmax,xax] = f_oneDPDE(P,B0,W0)
 
 %model (As in Gandhi et al, P now variable)
 D = 10; %Seed dispersal rate - Something funky going on here
@@ -15,6 +15,7 @@ xmax = length(B0); %number of gridpoints in space
 tmax = 2000; %number of timesteps to run
 dt = 0.01; %Timestep size
 dx = 0.1; %Grid resolution 
+xax = linspace(0,(xmax-1)*dx,xmax);
 
 %Preallocating size of W,B
 W = zeros(tmax,xmax);
