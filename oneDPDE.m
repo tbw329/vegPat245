@@ -7,7 +7,7 @@ M = 1.8; %Mortality Rate
 J = 0.003; %Water Use Efficiency
 V = 63; %Advection Rate
 R = 100; %Transpiration Rate
-P = 250; %Precip rate (in 240<P<272 range for pattern formation
+P = 272; %Precip rate (in 240<P<272 range for pattern formation
 
 %Finite difference parameters
 tmax = 5000; %number of timesteps to run
@@ -15,7 +15,7 @@ xmax = 1000; %number of gridpoints in space
 dt = 0.01; %Timestep size
 dx = 0.1; %Grid resolution
 xax = linspace(0,(xmax-1)*dx,xmax);
-domlength = dx*xmax;
+domlength = xmax*dx;
 
 %Preallocating size of W,B
 W = zeros(tmax,xmax);
@@ -42,11 +42,11 @@ for j = 1:xmax
 
 %             Periodic ICs
             
-%             B(1,j) = Beq + 0.01*(sin(0.25*j*domlength/xmax)); % Initial vegetation density
-%             W(1,j) = Weq + 0.01*(sin(0.25*j*domlength/xmax)); % Initial water concentration
+             B(1,j) = Beq + 0.1*(sin(2*pi*4*j/xmax)); % Initial vegetation density
+             W(1,j) = Weq + 0.1*(sin(2*pi*4*j/xmax)); % Initial water concentration
 
-            B(1,j) = Beq + 0.01*(rand(1)-1/2); % Initial vegetation density
-            W(1,j) = Weq + 0.01*(rand(1)-1/2); % Initial water concentration
+%             B(1,j) = Beq + 0.01*(rand(1)-1/2); % Initial vegetation density
+%             W(1,j) = Weq + 0.01*(rand(1)-1/2); % Initial water concentration
             
 
 %         %Step ICs
@@ -87,6 +87,7 @@ muMatInv = muMat^-1;
 
 
 for i = 2:tmax
+    %P = 270-i/1000; %linearly decreasing P option
     Wrow = W(i-1,:);
     Brow = B(i-1,:);
     W(i,:) = (lambdaMatInv*(Wrow + dt*(-L*Wrow - R*Wrow.*Brow.^2 + P))')';
