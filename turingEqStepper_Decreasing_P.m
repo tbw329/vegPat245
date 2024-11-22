@@ -3,7 +3,7 @@
 %Note, this code takes about 3 minutes to run when Pax is 272:-1:100
 
 %Params for curve tracking alg
-stepsize = 0.2;
+stepsize = 0.2;s
 nmax = 1000;
 %These params are for rootfinding
 tol = 1e-5;

@@ -7,7 +7,7 @@ M = 1.8; %Mortality Rate
 J = 0.003; %Water Use Efficiency
 V = 63; %Advection Rate
 R = 100; %Transpiration Rate
-P = 272; %Precip rate (in 240<P<272 range for pattern formation
+P = 241; %Precip rate (in 240<P<272 range for pattern formation
 
 %Finite difference parameters
 tmax = 5000; %number of timesteps to run
@@ -66,9 +66,11 @@ Bsum(1) = sum(B(1,:))/xmax;
     figure(1)
     clf
     fig1 = gca;
+    xlabel('Position [m]')
+    ylabel('Biomass Density [kg/m^{2}]')
     pl1 = plot(fig1,xax,B(1,:));
     
-    ylim([0 2])
+    %ylim([0 2])
     drawnow
 
 %Initialise the matrices
@@ -100,6 +102,10 @@ if mod(i,100) == 0
 end
 Bsum(i) = sum(B(i,:))/xmax;
 end
+
+    xlabel('Position [m]')
+    ylabel('Biomass Density [kg/m^{2}]')
+    title('Wavelike Solution for P = 250mmyr^{-1}')
 
 %Total biomass over time plot, interesting
 figure(2)

@@ -159,12 +159,13 @@ plot(unstable(3,:),unstable(2,:), '--k')
 %according to the number of peaks in the domain
 scatter(Pvec,Bmax,[],numPeaks)
 scatter(Pvec,Bavg,[],numPeaks,'filled')
+caxis([0 4])
 colormap(gca,'jet')
 c = colorbar;
 c.Label.String = 'Number of Wavelengths in Domain';
 
 %Legend, titles etc.
 legend('Homogenous Stable','Homogenous Unstable','Maximum Biomass in Patterns','Average Biomass in Patterns',location = 'northwest')
-title('Equilibria of the Klausemeier System')
+title('Equilibria of the Klausmeier System')
 ylabel('Biomass Density kgm^{-2}')
 xlabel('Precipitation mmyr^{-1}')

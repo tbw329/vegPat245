@@ -13,7 +13,7 @@ J = mSciJacobian(f,xold,jach);
 converged = 0;
 
 for i = 1:maxit   
-    x = xold - (J^-1)*f(xold);%Newton iteration
+    x = xold - (inv(J))*f(xold);%Newton iteration
     J = mSciJacobian(f,x,jach); %Jacobian at new x
     if (all(abs(x-xold)) < tol) && (all(f(x)) < tol) %Break if close to ans.
         converged = 1;

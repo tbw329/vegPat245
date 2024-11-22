@@ -18,6 +18,7 @@ x = mSciSolve(fparamfix,y0(1:(ylength-1)),tol,maxit,jach);
 y = [x;y0(ylength)]; %Append parameter value to the found equilibrium
 ylist(:,1) = y;
 
+
 for i = 2:nmax
     ypred = y + stepsize*ytan; %Initial guess for the next equilibrium
     ftosolve = @(y)[f(y);dot(ytan,y-ypred)]; %The system we aim to solve
