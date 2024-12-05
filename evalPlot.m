@@ -53,23 +53,19 @@ end
 [X, Y] = meshgrid(kvec,Pvec);
 figure(1)
 clf
+hold on
 fig1 = gca;
-[pl1,h] = contour(fig1,X,Y,sig);
-clabel(pl1,h);
-title('Growth rates Homogenous Equilibrium Perturbations')
-xlabel('k')
-ylabel('P')
-legend('max(\Re(\sigma(k)))','location','north')
+contourf(fig1,X,Y,sig);
+contour(fig1,X,Y,sig,[0 0],'--r','LineWidth',5);
+colormap(gca,'parula')
+c = colorbar;
+c.Label.String = 'max(\Re(\sigma(k)))';
+c.FontSize = 24;
+title('Growth rates Wave-Like Equilibrium Perturbations','FontSize',24)
+xlabel('Wavenumber [m^{-1}]','FontSize',24)
+ylabel('Mean Annual Precipitation [mmyr^{-1}]','FontSize',24)
 
-%Fig 2: Same as Fig1, but only sig = 0 contour is plotted
-figure(2)
-clf
-fig2 = gca;
-pl2 = contour(fig2,X,Y,sig,[0 0]);
-title('Growing/Decaying Modes of Homogenous Equilibrium Perturbations')
-xlabel('k')
-ylabel('P')
-legend('max(\Re(\sigma(k)))=0','location','north')
+
 
 %Fig 3: sig(k) plot for a range of P values
 figure(3)

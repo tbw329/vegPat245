@@ -68,7 +68,7 @@ Bsum(1) = sum(B(1,:))/xmax;
     fig1 = gca;
     xlabel('Position [m]')
     ylabel('Biomass Density [kg/m^{2}]')
-    pl1 = plot(fig1,xax,B(1,:));
+    pl1 = plot(fig1,xax,B(1,:),'LineWidth',3);
     
     %ylim([0 2])
     drawnow
@@ -103,9 +103,12 @@ end
 Bsum(i) = sum(B(i,:))/xmax;
 end
 
-    xlabel('Position [m]')
-    ylabel('Biomass Density [kg/m^{2}]')
-    title('Wavelike Solution for P = 250mmyr^{-1}')
+xlabel('Position[m]','FontSize',24)
+ylabel('Biomass Density [kg/m^{2}]','FontSize',24)
+ax=gca;
+ax.FontSize = 24;
+xlabel('Position [m]')
+ylim([0 1])
 
 %Total biomass over time plot, interesting
 figure(2)

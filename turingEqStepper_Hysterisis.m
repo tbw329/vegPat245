@@ -152,8 +152,14 @@ clf
 hold on
 
 %Plotting the Stable and Unstable Steady States
-plot(stable(3,:),stable(2,:), '-k');
-plot(unstable(3,:),unstable(2,:), '--k')
+plot(stable(3,:),stable(2,:), '-k','LineWidth',3);
+plot(unstable(3,:),unstable(2,:), '--k','LineWidth',3)
+%title('Bifurcation Curve for Uniform Vegetation Patterns','FontSize',24)
+ylabel('Biomass Density [kgm^{-2}]','FontSize',24)
+xlabel('Mean Annual Precipitation [mmyr^{-1}]','FontSize',24)
+xlim([150 310])
+ax=gca;
+ax.FontSize = 24;
 
 %Plotting the average and maximum values of the Turing equilibria, coloured
 %according to the number of peaks in the domain
@@ -161,11 +167,8 @@ scatter(Pvec,Bmax,[],numPeaks)
 scatter(Pvec,Bavg,[],numPeaks,'filled')
 caxis([0 4])
 colormap(gca,'jet')
-c = colorbar;
-c.Label.String = 'Number of Wavelengths in Domain';
+%c = colorbar;
+%c.Label.String = 'Number of Wavelengths in Domain';
 
 %Legend, titles etc.
-legend('Homogenous Stable','Homogenous Unstable','Maximum Biomass in Patterns','Average Biomass in Patterns',location = 'northwest')
-title('Equilibria of the Klausmeier System')
-ylabel('Biomass Density kgm^{-2}')
-xlabel('Precipitation mmyr^{-1}')
+%legend('Homogenous Stable','Homogenous Unstable','Maximum Biomass in Patterns','Average Biomass in Patterns',location = 'northwest')
