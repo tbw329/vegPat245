@@ -30,12 +30,15 @@ end
 
 
 %Plot Precipiation against Biomass with stabilities
-hold off
-plot(stable(3,:),stable(2,:), '.g');
+figure(1)
+clf
 hold on
-plot(unstable(3,:),unstable(2,:), '.r')
-xlim([200 320]);
+plot(stable(3,:),stable(2,:), '-k','LineWidth',3);
+plot(unstable(3,:),unstable(2,:), '--k','LineWidth',3)
+xlim([220 320]);
 legend('stable','unstable',location = 'northwest')
-title('Bifurcation Curve for Uniform Vegetation Pattern')
-ylabel('Biomass Density kgm^{-2}')
-xlabel('Precipitation mmyr^{-1}')
+title('Bifurcation Curve for Uniform Vegetation Patterns','FontSize',24)
+ylabel('Biomass Density [kgm^{-2}]','FontSize',24)
+xlabel('Mean Annual Precipitation [mmyr^{-1}]','FontSize',24)
+ax=gca;
+ax.FontSize = 24;
