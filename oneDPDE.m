@@ -44,8 +44,8 @@ for j = 1:xmax
 
 %             Periodic ICs
             
-             B(1,j) = Beq + 0.1*(sin(2*pi*2*j/xmax)); % Initial vegetation density
-             W(1,j) = Weq + 0.1*(sin(2*pi*2*j/xmax)); % Initial water concentration
+             B(1,j) = Beq + 0.1*(sin(2*pi*4*j/xmax)); % Initial vegetation density
+             W(1,j) = Weq + 0.1*(sin(2*pi*4*j/xmax)); % Initial water concentration
 
 %             B(1,j) = Beq + 0.01*(rand(1)-1/2); % Initial vegetation density
 %             W(1,j) = Weq + 0.01*(rand(1)-1/2); % Initial water concentration
@@ -98,7 +98,7 @@ for i = 2:tmax
     B(i,:) = (muMatInv*(Brow + dt*(J*R*Wrow.*Brow.^2 - M*Brow))')';
 
 if mod(i,100) == 0
-    pl1.YData = W(i,:); 
+    pl1.YData = B(i,:); 
     drawnow
     i
 end
@@ -106,15 +106,11 @@ Bsum(i) = sum(B(i,:))/xmax;
 end
 
 xlabel('Position[m]','FontSize',24)
-%ylabel('Biomass Density [kg/m^{2}]','FontSize',24)
-ylabel('Water Density [kg/m^{2}]','FontSize',24)
+ylabel('Biomass Density [kg/m^{2}]','FontSize',24)
 ax=gca;
 ax.FontSize = 24;
 xlabel('Position [m]')
-%title('Wavelike Solution for Biomass')
-title('Wavelike Solution for Water')
-%ylim([0 1]) %Use this for plotting biomass
-ylim([0 60]) %Use this for plotting watter
+ylim([0 1])
 
 %Total biomass over time plot, interesting
 figure(2)

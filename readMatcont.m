@@ -1,4 +1,4 @@
-function [curveData,xp,spatialMesh,params] = readMatcont(system,curve,dim,diagram,matContDir,qsave,fileName)
+function [curveData,xp,spatialMesh,params] = readMatcont(system,curve,dim,diagramName,matContDir,qsave,fileName)
 
  %Use from the vegPat245 root directory
  %System for Klausmeier: %KlausemeierPTW 
@@ -15,7 +15,7 @@ function [curveData,xp,spatialMesh,params] = readMatcont(system,curve,dim,diagra
 
  %matContDir: full path name for where matCont is installed (should end in \matCont7p5)
 
-curveData = load(fullfile(matContDir,'Systems',system,diagram,curve));
+curveData = load(fullfile(matContDir,'Systems',system,diagramName,curve));
 x = curveData.x;
 
     lds = curveData.globals.lds;
@@ -52,7 +52,7 @@ x = curveData.x;
     %Save the file if needed
     if qsave == 1
         filePath = fullfile('matContData',fileName);
-        save(filePath,'curveData','xp','spatialMesh','params')
+        save(filePath,'curveData','xp','spatialMesh','params','-mat')
     end
 end
 

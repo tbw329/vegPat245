@@ -3,6 +3,7 @@
 %Note, this code takes about 3 minutes to run when Pax is 272:-1:100
 
 %Params for curve tracking alg
+
 stepsize = 0.2;
 nmax = 1000;
 %These params are for rootfinding
@@ -66,6 +67,7 @@ for j = 1:xmax
     Btmax(j) = Beq + 0.1*(sin(2*pi*numwave*j/xmax)); % Initial vegetation density
     Wtmax(j) = Weq + 0.1*(sin(2*pi*numwave*j/xmax)); % Initial water concentration
 end
+
 
 %Preallocations for naive stepping through Turing Equilibria
 Pindex = 0;
@@ -221,3 +223,4 @@ plot(Pvec,waveSpeed)
 ylabel('Wave Speed [myr\^{-1}]')
 xlabel('Annual Precipitation [mmyr\^{-1}]')
 title('Wave speeds')
+

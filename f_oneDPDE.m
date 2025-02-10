@@ -27,6 +27,7 @@ W(1,:) = W0;
             
 %Initialise the matrices
 
+
 [lambdaMatInv, muMatInv] = KMBEMat_Init(dt,dx,V,D,xmax);
 
 %Time Stepping
