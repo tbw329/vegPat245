@@ -1,5 +1,5 @@
 %Set up 
-function [Bavg,Btmax,Wtmax,xax] = f_oneDPDE(P,B0,W0)
+function [Bavg,Btmax,Wtmax,xax,B] = f_oneDPDE(P,B0,W0)
 
 %model (As in Gandhi et al, P now variable)
 D = 10; %Seed dispersal rate - Something funky going on here

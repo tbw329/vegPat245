@@ -93,6 +93,7 @@ for P = Pax
     [Bavg(Pindex),Btmax,Wtmax,xax] = f_oneDPDE(P,Btmax,Wtmax);
     Bmax(Pindex) = max(Btmax);
     BtmaxToPlot(:,Pindex) = Btmax;
+    WtmaxToPlot(:,Pindex) = Wtmax;
     
 
     %If the amplitude of waves is negligible, we declare system to be
@@ -119,8 +120,22 @@ for P = Pax
             if Btmax(i) > Btmax(i-1) && Btmax(i) > Btmax(i+1)
                 peakIndex = i;
                 BtmaxToPlot(:,Pindex) = cycle(BtmaxToPlot(:,Pindex),peakIndex);
+                WtmaxToPlot(:,Pindex) = cycle(WtmaxToPlot(:,Pindex),peakIndex);
                 break
             end
+        end
+    end
+
+    %This saves the last solution before a wave collapse so it may be used
+    %as an initial condition
+    if Pindex ~= 1
+        if numPeaks(Pindex) ~= numPeaks(Pindex-1)
+           biomassBeforeCollapse = BtmaxToPlot(:,Pindex-1);
+           waterBeforeCollapse = WtmaxToPlot(:,Pindex-1);
+           precipAfterCollapse = P;
+           save(fullfile('otherData',strcat(num2str(numPeaks(Pindex-1)), ...
+               'WaveTo',num2str(numPeaks(Pindex)),'WaveCollapse')), ...
+               'biomassBeforeCollapse','waterBeforeCollapse','precipAfterCollapse')
         end
     end
 
