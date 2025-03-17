@@ -1,4 +1,4 @@
-%Up until the comment line is an excerpt of runAndPlot.m
+k%Up until the comment line is an excerpt of runAndPlot.m
 
 %Note, this code takes about 3 minutes to run when Pax is 272:-1:100
 
